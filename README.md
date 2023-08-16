@@ -17,7 +17,7 @@ In this project, I setup Azure Sentinel (SIEM) and connected it to a live virtua
 6. Make a custom log with geo data.<br />
 7. Setup Azure Sentinel - create a map to map attack data (countries).<br /><br />
 <p align="center">
-<img height="80%" width="80%" src= "https://github.com/aashah23/AzureSentinelSIEM/assets/66967848/0f9381a0-a788-4462-a1a0-edb55baa0a15">
+<img height="80%" width="80%" src= "https://github.com/aashah23/AzureSentinelSIEM/assets/66967848/1aa08546-f244-4c11-b224-9a00f406d0bd">
 
 <br />
 <h2>Environment Used </h2>
@@ -31,7 +31,7 @@ In this project, I setup Azure Sentinel (SIEM) and connected it to a live virtua
 Start by creating a Virtual Machine (VM) for Windows 10 Pro and a new resource group. Make an admin username and password as well. For the NIC security group, create a new firewall by create our own custom inbound rule that allows everything into the VM (TCP pings/ ICMP pings etc), as we want it exposed to worldwide attackers and no traffic droppage. Set the destination port ranges to '*' and set the priority low, to around '100'. Then 'Review and Create'. <br /><br />
 
 <p align="center">
-<img height="80%" width="80%" src="https://github.com/aashah23/AzureSentinelSIEM/assets/66967848/bd70c749-7842-476a-b672-fca17295c2a4">
+<img height="80%" width="80%" src="https://github.com/aashah23/AzureSentinelSIEM/assets/66967848/d56bfb9f-6a65-4db3-9a94-81353380d53b">
 
 <br />
 <br />
@@ -39,7 +39,7 @@ Start by creating a Virtual Machine (VM) for Windows 10 Pro and a new resource g
 Next, head over to the 'Log Analytics Workspace' in order to ingest logs (Windows Event logs) from the VM. Select the resource group we just made ('honeypot-vm'), and after 'Review and Create'. Next, head to 'Microsoft Denfender for Cloud'and open the 'law-honeypot' that we just created under 'Enviroment Settings'. Turn on 'Servers' and 'Foundational CSPM'. Save it. <br /><br />
 
 <p align="center">
-<img height="80%" width="80%" src="https://github.com/aashah23/AzureSentinelSIEM/assets/66967848/f02334dc-c8a2-4639-b7c4-2e4c9d01b3b2">
+<img height="80%" width="80%" src="https://github.com/aashah23/AzureSentinelSIEM/assets/66967848/f04cecaf-0907-4548-a8ac-fc9d0d3ca870">
 
 <br /><br />
 
@@ -47,43 +47,43 @@ Head to the next option under called 'Data Events' and choose 'All Events' and '
 <br /><br />
 
 <p align="center">
-<img height="80%" width="80%" src="https://github.com/aashah23/AzureSentinelSIEM/assets/66967848/5f6a9e86-269f-403c-b437-22d4c47c298a">
+<img height="80%" width="80%" src="https://github.com/aashah23/AzureSentinelSIEM/assets/66967848/5616502b-ee67-4339-b535-149ef065475f">
 <br /><br />
          
 Once the VM is has started running, click on it then under overview, copy the 'Public IP address':
 <br /><br />
 <p align="center">
-<img height="80%" width="80%"  src="https://github.com/aashah23/AzureSentinelSIEM/assets/66967848/82b8eb0f-d4f8-49d5-a11a-5c550cf59c14">
+<img height="80%" width="80%"  src="https://github.com/aashah23/AzureSentinelSIEM/assets/66967848/6db1b455-3e28-4796-a0b0-79b2a08286e3">
 <br /><br />
 
 Then open 'Remote Desktop Connection' on your own computer and pase the address in as well as the admin username and password that you had created earlier on:
 <br /><br />
 <p align="center">
-<img height="80%" width="80%" src="https://github.com/aashah23/AzureSentinelSIEM/assets/66967848/689af187-4938-4a8b-974e-918a971243b1">
+<img height="80%" width="80%" src="https://github.com/aashah23/AzureSentinelSIEM/assets/66967848/426ce61b-afc2-40a6-a22d-ca95a6d203ae">
 <br /><br />
 
 
 Once you have opened the VM, go to 'Event Viewer' inside the VM. Then head over to 'Windows Logs' then 'Security' and wait for it all to load. It displays all security on this VM. Focus on <b> Event ID: 4625 </b>, as it shows us the failure logs throug RDP. If we open one of them, it tells us the IP address and rthe name of the workstation that tried to login and failed, and this (IP addresses_ is what we will start using to ge their geolocation. 
 <br /><br />
 <p align="center">
-<img height="80%" width="80%" src="https://github.com/aashah23/AzureSentinelSIEM/assets/66967848/b8c7b1cd-65e2-483d-9b1d-778a23ed8c9f">
+<img height="80%" width="80%" src="https://github.com/aashah23/AzureSentinelSIEM/assets/66967848/e097483a-4756-4655-b412-3130f3214d88">
 <br /><br />
 
 We then head on over to our computer and ping the VM IP address using 'ping (IP address) -t' using the CMD to see if the VM's firewall is working or not. Initially it says 'Request timed out', so now we go to the VM's firewall settings and turn the domain, private and public firewalls off. Then we ping it again and see the echo requests this time round:
 <br /><br />
 <p align="center">
-<img height="80%" width="80%" src="https://github.com/aashah23/AzureSentinelSIEM/assets/66967848/9d2c2362-1dcc-46d1-acec-a6c3c8cd51e5">
+<img height="80%" width="80%" src="https://github.com/aashah23/AzureSentinelSIEM/assets/66967848/87f8108c-db88-4a91-bb09-6b3a332b332b">
 <br /><br />
 
 We then download a PowerShell Script (attached to this repo) and run Windows Powershell ISE and then create  a new script and paste the script we just downloaded. At the same time, sign in to the 'ipgeolocation.io' website and come to your main dashboard page. It will give you a custom API key and copy that into the script in PowerShell ISE, and then run it:
 <br /><br />
 <p align="center">
-<img height="80%" width="80%" src="https://github.com/aashah23/AzureSentinelSIEM/assets/66967848/325178c5-9518-46ff-9f41-55062b30925a">
+<img height="80%" width="80%" src="https://github.com/aashah23/AzureSentinelSIEM/assets/66967848/45987ceb-2354-4964-82df-1b9c91403e94">
 <br /><br />
 The script looks through the event security log we saw ealier and grabs all the events and the IP address of the people who failed to login. It then grabs their corresponding geo data and creates a new log file called 'failed_rdp'. The purple output we see are the 4625 failed log ons and sends it to the IP address API and gets the geo data.
 <br /><br />
 <p align="center">
-<img height="80%" width="80%"src="https://github.com/aashah23/AzureSentinelSIEM/assets/66967848/44d0ce2a-ef14-4841-90ae-08bc2c84d2e0">
+<img height="80%" width="80%"src="https://github.com/aashah23/AzureSentinelSIEM/assets/66967848/924b57c6-1b3c-4524-95e9-8789b0c9818c">
 <br /><br />
 
 Now on our computer, we create a custom log inside analytics workspace that allows us to bring the geo data log into our custom workspace. We go to 'Tables' in our Log Analytics Workspace and create a new MMA-based log. For the sample log, we copy the contents of failed_rdp log file from the VM to our computer, and is used to train Log Analytics what to lok for in the log file. Type in the correct Windows Path. Then, head over to 'Logs' then make a new Sentinel Map Query and type in the folowing code:
@@ -116,5 +116,8 @@ Failed_RDP_Geolocation_CL
 Next, for visualization choose 'Map' and size 'Full' for example. In the Map Settings, set Latitute to latitude and Longitude to longitude, and for the 'Metric Label', choose 'Label' and for 'Metric Value', choose 'Event Count'. Then Apply and see the map. This map represents the location of failed live cyber attacks from around the world!!
 <br /><br />
 <p align="center">
-<img height="80%" width="80%"src="https://github.com/aashah23/AzureSentinelSIEM/assets/66967848/542f6974-53c8-4c04-8790-0bc2e9ddd2fa">
+<img height="80%" width="80%"src="https://github.com/aashah23/AzureSentinelSIEM/assets/66967848/cc963ff6-9c41-47ff-bf41-f8c91853fb2d">
 <br /><br />
+
+
+What we see is that after around 30 minutes of running the VM, there were slightly over 250 RDP attacks on it, with most coming from Netherlands in this case.
