@@ -74,4 +74,28 @@ The script looks through the event security log we saw ealier and grabs all the 
 (insert purple)
 <br />
 
-Now, we create a custom log inside analytics workspace that allows us to bring the geo data log into our custom workspace. 
+Now on our computer, we create a custom log inside analytics workspace that allows us to bring the geo data log into our custom workspace. We go to 'Tables' in our Log Analytics Workspace and create a new MMA-based log. For the sample log, we copy the contents of failed_rdp log file from the VM to our computer, and is used to train Log Analytics what to lok for in the log file. Type in the correct Windows Path. Then, head over to 'Logs' then make a new Sentinel Map Query and type in the folowing code:
+
+```ruby
+FAILED_RDP_WITH_GEO_CL 
+| extend username = extract(@"username:([^,]+)", 1, RawData),
+         timestamp = extract(@"timestamp:([^,]+)", 1, RawData),
+         latitude = extract(@"latitude:([^,]+)", 1, RawData),
+         longitude = extract(@"longitude:([^,]+)", 1, RawData),
+         sourcehost = extract(@"sourcehost:([^,]+)", 1, RawData),
+         state = extract(@"state:([^,]+)", 1, RawData),
+         label = extract(@"label:([^,]+)", 1, RawData),
+         destination = extract(@"destinationhost:([^,]+)", 1, RawData),
+         country = extract(@"country:([^,]+)", 1, RawData)
+| where destination != "samplehost"
+| where sourcehost != ""
+| summarize event_count=count() by latitude, longitude, sourcehost, label, destination, country
+
+```
+Upon running it, we get the failed RDP logs. We then want to extract geodata fields like lattitude, longitude etc. To do this, we can use the code:
+
+```ruby
+Failed_RDP_Geolocation_CL
+| parse RawData with * "latitude:" Latitude ",longitude:" Longitude ",destinationhost:" DestinationHost ",username:" Username ",sourcehost:" Sourcehost ",state:" State ", country:" Country ",label:" Label ",timestamp:" Timestamp
+| project Latitude, Longitude, DestinationHost, Username, Sourcehost, State, Country, Label, Timestamp
+```
