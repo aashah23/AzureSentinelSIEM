@@ -17,7 +17,9 @@ In this project, I setup Azure Sentinel (SIEM) and connected it to a live virtua
 6. Make a custom log with geo data.<br />
 7. Setup Azure Sentinel - create a map to map attack data (countries).<br />
 
-(image of work tree) 
+<p align="center">
+<img src="https://i.imgur.com/3d3CEwZ.png" height="85%" width="85%"/>
+</p>
 
 <h2>Environment Used </h2>
 
