@@ -98,4 +98,10 @@ Upon running it, we get the failed RDP logs. We then want to extract geodata fie
 Failed_RDP_Geolocation_CL
 | parse RawData with * "latitude:" Latitude ",longitude:" Longitude ",destinationhost:" DestinationHost ",username:" Username ",sourcehost:" Sourcehost ",state:" State ", country:" Country ",label:" Label ",timestamp:" Timestamp
 | project Latitude, Longitude, DestinationHost, Username, Sourcehost, State, Country, Label, Timestamp
+| where destinationhost_CF != "samplehost"
+| where sourcehost_CF != ""
 ```
+Next, for visualization choose 'Map' and size 'Full' for example. In the Map Settings, set Latitute to latitude and Longitude to longitude, and for the 'Metric Label', choose 'Label' and for 'Metric Value', choose 'Event Count'. Then Apply and see the map. This map represents the location of failed live cyber attacks from around the world!!
+
+(insert map)
+<br />
