@@ -17,11 +17,11 @@ In this project, I setup Azure Sentinel (SIEM) and connected it to a live virtua
 6. Make a custom log with geo data.<br />
 7. Setup Azure Sentinel - create a map to map attack data (countries).<br />
 
-
+(image of work tree) 
 
 <h2>Environment Used </h2>
 
-- <b>Windows 10</b> (21H2)
+- <b>Windows 10 Pro</b> (22H2)
 
 
 
@@ -31,4 +31,4 @@ In this project, I setup Azure Sentinel (SIEM) and connected it to a live virtua
 
 
 <h2>Project walk-through:</h2>
-
+Started by creating a Virtual Machine (VM) for Windows 10 Pro and a new resource group. Make an admin username and password as well. For the NIC security group, 
