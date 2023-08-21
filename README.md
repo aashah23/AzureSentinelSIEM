@@ -121,3 +121,5 @@ Next, for visualization choose 'Map' and size 'Full' for example. In the Map Set
 
 
 What we see is that after around 30 minutes of running the VM, there were slightly over 250 RDP attacks on it, with most coming from Netherlands in this case.
+
+Reference: https://www.youtube.com/watch?v=RoZeVbbZ0o0&t=823s
